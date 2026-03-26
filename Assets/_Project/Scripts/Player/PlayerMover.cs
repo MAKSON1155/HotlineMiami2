@@ -14,7 +14,12 @@ public class PlayerMover : MonoBehaviour
     }
     
     public void Move(float xDirection, float yDirection)
-    {
+    {  
+        Vector2 direction = new(xDirection, yDirection);
+
+        if (direction.magnitude > 1.0f)
+            direction.Normalize();
+
         Vector2 velocity = new(xDirection * _moveSpeed, yDirection * _moveSpeed);
                
         CheckMoveSpeed(ref velocity.x);
