@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     {
         _playerRotator.Rotate();
     }
+
     private void FixedUpdate()
     {
         _playerMover.Move(_inputReader.XDirection, _inputReader.YDirection);

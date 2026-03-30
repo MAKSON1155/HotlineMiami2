@@ -6,8 +6,13 @@ public class PlayerRotator : MonoBehaviour
    [SerializeField] private float _rotationSpeed = 10f;
     private InputReader _inputReader;
 
+    private void Awake()
+    {
+        _inputReader = GetComponent<InputReader>();
+    }
+
     public void Rotate()
-    {      
+    {
         Vector2 direction = (_inputReader.GetMousePosition() - transform.position).normalized;
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
