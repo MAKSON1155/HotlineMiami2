@@ -3,17 +3,16 @@
 [RequireComponent(typeof(EnemyMover))]
 public class EnemyAttack : MonoBehaviour
 {
-    private EnemyMover _mover;
+    private Rotator _rotator;
 
     private void Awake()
     {
-        _mover = GetComponent<EnemyMover>();
+        _rotator = GetComponent<Rotator>();
     }
 
     public void Attack(Vector2 targetPosition)
     {
-        _mover.Rotate(targetPosition);
-
+        _rotator.Rotate(targetPosition);
     }
 }
 

@@ -1,34 +1,39 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyMover))]
 public class EnemyPatrol : MonoBehaviour
 {
-    [SerializeField] private PatrolPoint[] _points;
-    private WaitForSeconds _waitingTime;
+    [SerializeField] private PatrolPoint[] _patrolPoints;
+
     private EnemyMover _mover;
-    private float _thresholdSqr = 0.5f;
-    private int _currentIndex = 0;
-    private int _sleep = 1;
-    private Coroutine _current;
+    private Rigidbody2D _rigidbody;
+    private WaitForSeconds _waitForSeconds;
+    private Coroutine _currentCoroutine;
+
+    private readonly float _stopDistance = 0.2f;
+    private readonly float _sleep = 1f;
+    private int _currentPoint = 0;
+
+    private void Awake()
+    {
+        _mover = GetComponent<EnemyMover>();
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _currentCoroutine = null;
+        _waitForSeconds = new WaitForSeconds(_sleep);
+    }
 
     private void Start()
     {
-        _current = StartCoroutine(Patrol());
-    }
-
-    private void Awake()
-    {   
-        _waitingTime = new WaitForSeconds(_sleep);
-        _mover = GetComponent<EnemyMover>();
+        _currentCoroutine = StartCoroutine(Patrol());
     }
 
     public void StopPatrol()
     {
-        if (_current != null)             
-            StopCoroutine(_current);
+        if (_currentCoroutine != null)
+            StopCoroutine(_currentCoroutine);
 
-        _current = null;
+        _currentCoroutine = null;
         _mover.Stop();
     }
 
@@ -36,20 +41,18 @@ public class EnemyPatrol : MonoBehaviour
     {
         while (true)
         {
-            Vector2 targetPosition = _points[_currentIndex].transform.position;
-            Vector2 direction = targetPosition - (Vector2)transform.position;
+            Vector2 targetPosition = _patrolPoints[_currentPoint].transform.position;
+            Vector2 offset = targetPosition - _rigidbody.position;
 
-            if (direction.sqrMagnitude <= _thresholdSqr)
+            if (offset.magnitude < _stopDistance)
             {
-                _currentIndex = _currentIndex++ % _points.Length;
+                _currentPoint = ++_currentPoint % _patrolPoints.Length;
                 _mover.Stop();
-                yield return _waitingTime;
-                continue;
+                yield return _waitForSeconds;
             }
 
-            _mover.Move(direction, _thresholdSqr);
+            _mover.Move(targetPosition);
             yield return null;
         }
     }
 }
-

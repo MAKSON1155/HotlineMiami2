@@ -1,42 +1,32 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(Rotator))]
 public class EnemyMover : MonoBehaviour
-{
-    private Rigidbody2D _rigidbody;
-    private float _moveSpeed = 4.0f;
-    private float CurrentDirection;
+{  
+    [SerializeField] private float _moveSpeed = 4f;
+    [SerializeField] private float _stopDistance = 0.1f;
 
+    private Rigidbody2D _rigidbody;
+    private Rotator _rotator;
+    
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-    } 
-
-    public void Move(Vector2 direction, float distanceSqr)
-    {
-        if (direction.sqrMagnitude < distanceSqr)
-        {
-            Stop();
-            return;
-        }
-
-        float moveDirection = Mathf.Sign(direction.x);
-
-        if (moveDirection != CurrentDirection)
-        {
-            Rotate(direction);
-            CurrentDirection = moveDirection;
-        }
-
-        _rigidbody.velocity = direction.normalized * _moveSpeed;
+        _rotator = GetComponent<Rotator>();
     }
 
-    public void Rotate(Vector2 targetPosition)
+    public void Move(Vector2 targetPosition)
     {
-        float targetAngle = Mathf.Atan2(targetPosition.y, targetPosition.x) * Mathf.Rad2Deg;
+        _rotator.Rotate(targetPosition);
 
-        Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2.0f * Time.deltaTime);
+        Vector2 currentPosition = _rigidbody.position;
+        Vector2 offset = targetPosition - currentPosition;
+
+        if (offset.magnitude < _stopDistance)
+            Stop();
+
+        Vector2 direction = offset.normalized;
+        _rigidbody.velocity = direction * _moveSpeed;
     }
 
     public void Stop()

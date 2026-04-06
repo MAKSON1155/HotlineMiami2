@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -12,25 +13,17 @@ public class PlayerMover : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
     }
-    
-    public void Move(float xDirection, float yDirection)
-    {  
-        Vector2 direction = new(xDirection, yDirection);
 
+    public void Move(Vector2 direction)
+    {
         if (direction.magnitude > 1.0f)
             direction.Normalize();
 
-        Vector2 velocity = new(xDirection * _moveSpeed, yDirection * _moveSpeed);
-               
-        CheckMoveSpeed(ref velocity.x);
-        CheckMoveSpeed(ref velocity.y);
-     
-        _rigidbody.velocity = velocity;
-    }
+        if (direction.magnitude < 0.1f)
+            direction = Vector2.zero;
 
-    private void CheckMoveSpeed(ref float value)
-    {
-        if (Mathf.Abs(value) < SpeedThreshold)
-            value = 0.0f;
-    }
+        Vector2 velocity = direction * _moveSpeed;
+
+        _rigidbody.velocity = velocity;
+    }       
 }

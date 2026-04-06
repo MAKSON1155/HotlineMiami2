@@ -1,0 +1,28 @@
+using UnityEngine;
+
+[RequireComponent(typeof(Rigidbody2D))]
+public class Rotator : MonoBehaviour
+{
+    [SerializeField] private float _rotationSpeed;
+    private Rigidbody2D _rigidbody;
+
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody2D>();
+    }
+
+    public void Rotate(Vector2 targetPosition)
+    {
+        Vector2 currentPosition = _rigidbody.position;
+        Vector2 direction = (targetPosition - currentPosition).normalized;
+
+        float targetAngel = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float currentAngel = _rigidbody.rotation;
+        float angularDifference = Mathf.DeltaAngle(currentAngel, targetAngel);
+
+        if ((angularDifference < -1 && angularDifference > 1) == false)
+            angularDifference = 0;
+
+        _rigidbody.angularVelocity = angularDifference * _rotationSpeed;
+    }
+}
