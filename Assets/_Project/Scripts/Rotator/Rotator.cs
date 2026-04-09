@@ -20,9 +20,6 @@ public class Rotator : MonoBehaviour
         float currentAngel = _rigidbody.rotation;
         float angularDifference = Mathf.DeltaAngle(currentAngel, targetAngel);
 
-        if ((angularDifference < -1 && angularDifference > 1) == false)
-            angularDifference = 0;
-
         _rigidbody.angularVelocity = angularDifference * _rotationSpeed;
     }
 }
