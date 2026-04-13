@@ -26,7 +26,7 @@ public class InputReader : MonoBehaviour
         if (Input.GetKey(KeyShot))
             _isShot = true;
 
-        if (Input.GetKey(KeyReload))
+        if (Input.GetKeyDown(KeyReload))
             _isReload = true;
     }
 

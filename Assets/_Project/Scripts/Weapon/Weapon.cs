@@ -1,12 +1,16 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Rotator))]
 public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] protected int _clipMaxSize;
     [SerializeField] protected float _gunRateDelay;
     [SerializeField] protected float _reloadTime;
+    [SerializeField] protected float _bulletSpeed;
     [SerializeField] protected Bullet _bulletPrefab;
+    [SerializeField] protected GameObject _position;
+    protected Rotator _rotator;
 
     protected Coroutine _shotCoroutine;
     protected Coroutine _reloadCoroutine;

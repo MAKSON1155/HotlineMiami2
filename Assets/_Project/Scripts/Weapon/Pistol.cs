@@ -5,8 +5,8 @@ public class Pistol : Weapon
 {
     private void Awake()
     {
+        _rotator = GetComponent<Rotator>();
         _clipCurrentSize = _clipMaxSize;
-
         _waitGunRate = new WaitForSeconds(_gunRateDelay);
         _waitReload = new WaitForSeconds(_reloadTime);
     }
@@ -15,7 +15,7 @@ public class Pistol : Weapon
     {
         if (_clipCurrentSize <= 0)
         {
-            Reload();
+            //Reload();
             return;
         }
 
@@ -33,11 +33,12 @@ public class Pistol : Weapon
 
     protected override IEnumerator DelayCoroutine()
     {
-        Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
+        Bullet bullet = Instantiate(_bulletPrefab, _position.transform.position, Quaternion.identity);
+        bullet.Move(_rotator.Direction, _bulletSpeed);
         _clipCurrentSize--;
-
         yield return _waitGunRate;
 
+        StopCoroutine(_shotCoroutine);
         _shotCoroutine = null;
     }
 
@@ -46,7 +47,7 @@ public class Pistol : Weapon
         yield return _waitReload;
 
         _clipCurrentSize = _clipMaxSize;
-
+        StopCoroutine(_reloadCoroutine);
         _reloadCoroutine = null;
     }
 }
