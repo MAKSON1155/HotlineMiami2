@@ -19,8 +19,7 @@ public class EnemyMover : MonoBehaviour
     {
         _rotator.Rotate(targetPosition);
 
-        Vector2 currentPosition = _rigidbody.position;
-        Vector2 offset = targetPosition - currentPosition;
+        Vector2 offset = targetPosition - _rigidbody.position;
 
         if (offset.magnitude < _stopDistance)
             Stop();
@@ -29,8 +28,5 @@ public class EnemyMover : MonoBehaviour
         _rigidbody.velocity = direction * _moveSpeed;
     }
 
-    public void Stop()
-    {
-        _rigidbody.velocity = Vector2.zero;
-    }
+    public void Stop() => _rigidbody.velocity = Vector2.zero;
 }

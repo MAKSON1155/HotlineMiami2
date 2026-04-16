@@ -23,7 +23,6 @@ public class Player : MonoBehaviour
 
         _playerMover.Move(_inputReader.MoveDirection);
 
-
         if (_inputReader.GetIsShot)
             _weapon.Shot();
 
