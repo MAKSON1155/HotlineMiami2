@@ -1,24 +1,86 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour
+[RequireComponent(typeof(Rotator))]
+public class Weapon : MonoBehaviour
 {
-    [SerializeField] protected int _clipMaxSize;
-    [SerializeField] protected float _gunRateDelay;
-    [SerializeField] protected float _reloadTime;
-    [SerializeField] protected Bullet _bulletPrefab;
+    [SerializeField] private int _clipMaxSize;
+    [SerializeField] private float _gunRateDelay;
+    [SerializeField] private float _reloadTime;
+    [SerializeField] private float _bulletSpeed;
+    [SerializeField] private Bullet _bulletPrefab;
+    [SerializeField] private GameObject _position;
 
-    protected Coroutine _shotCoroutine;
-    protected Coroutine _reloadCoroutine;
-    protected WaitForSeconds _waitGunRate;
-    protected WaitForSeconds _waitReload;
-    protected int _clipCurrentSize;
+    [SerializeField] public List<Weapons> Weapons;
+    private Weapons _active;
 
-    public abstract void Shot();
+    private int _clipCurrentSize;
+    private Coroutine _shotCoroutine;
+    private Coroutine _reloadCoroutine;
+    private WaitForSeconds _waitGunRate;
+    private WaitForSeconds _waitReload;
+    private Rotator _rotator;
 
-    public abstract void Reload();
+    private void Awake()
+    {
+        _active = Weapons[0];        
+        _rotator = GetComponent<Rotator>();
+    }
 
-    protected abstract IEnumerator DelayCoroutine();
+    private void Start()
+    {
+        _clipCurrentSize = _clipMaxSize;
+        _waitGunRate = new WaitForSeconds(_gunRateDelay);
+        _waitReload = new WaitForSeconds(_reloadTime);
+    }
 
-    protected abstract IEnumerator ReloadCoroutine();
+    public void Shot()
+    {
+        if (_clipCurrentSize <= 0)
+        {
+            Reload();
+            return;
+        }
+
+        if (_clipCurrentSize > 0)
+            _shotCoroutine ??= StartCoroutine(DelayCoroutine());
+    }
+
+    public void Reload()
+    {
+        if (_clipCurrentSize >= _clipMaxSize)
+            return;
+
+        _reloadCoroutine ??= StartCoroutine(ReloadCoroutine());
+    }
+
+    public void Refresh(Weapons weapon)
+    {
+        _clipMaxSize = weapon.ClipMaxSize;
+        _gunRateDelay = weapon._gunRateDelay;
+        _reloadTime = weapon._reloadTime;
+        _bulletSpeed = weapon._bulletSpeed;
+        _active = weapon;
+    }
+
+    private IEnumerator DelayCoroutine()
+    {
+        Bullet bullet = Instantiate(_bulletPrefab, _position.transform.position, Quaternion.identity);
+        bullet.Move(_rotator.Direction, _bulletSpeed);
+        _clipCurrentSize--;
+        yield return _waitGunRate;
+
+        StopCoroutine(_shotCoroutine);
+        _shotCoroutine = null;
+    }
+
+    private IEnumerator ReloadCoroutine()
+    {
+        yield return _waitReload;
+
+        _clipCurrentSize = _clipMaxSize;
+        StopCoroutine(_reloadCoroutine);
+        _reloadCoroutine = null;
+    }
 }
