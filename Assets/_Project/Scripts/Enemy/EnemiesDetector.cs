@@ -6,13 +6,13 @@ public class EnemiesDetector : MonoBehaviour
 {
     public event Action<Vector2> HasDetected;
 
-    [SerializeField] private  float _radius = 15f;
     private WaitForSeconds _sleep;
     private Collider2D[] _colliders;
+    private readonly float _radius = 15f;
 
     private void Awake()
     {
-        _sleep = new WaitForSeconds(0.1f);
+        _sleep = new WaitForSeconds(0.2f);
     }
 
     private void Start()

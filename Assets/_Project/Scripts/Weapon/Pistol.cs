@@ -38,7 +38,6 @@ public class Pistol : Weapon
 
         yield return _waitGunRate;
 
-        StopCoroutine(_shotCoroutine);
         _shotCoroutine = null;
     }
 
@@ -48,7 +47,6 @@ public class Pistol : Weapon
 
         _clipCurrentSize = _clipMaxSize;
 
-        StopCoroutine(_reloadCoroutine);
         _reloadCoroutine = null;
     }
 }

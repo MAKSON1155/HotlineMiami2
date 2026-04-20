@@ -11,7 +11,7 @@ public class EnemyPatrol : MonoBehaviour
     private WaitForSeconds _waitForSeconds;
     private Coroutine _currentCoroutine;
 
-    private readonly float _stopDistance = 0.1f;
+    private readonly float _stopDistance = 0.2f;
     private readonly float _sleep = 1f;
     private int _currentPoint = 0;
 
@@ -19,8 +19,8 @@ public class EnemyPatrol : MonoBehaviour
     {
         _mover = GetComponent<EnemyMover>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _waitForSeconds = new WaitForSeconds(_sleep);
         _currentCoroutine = null;
+        _waitForSeconds = new WaitForSeconds(_sleep);
     }
 
     private void Start()

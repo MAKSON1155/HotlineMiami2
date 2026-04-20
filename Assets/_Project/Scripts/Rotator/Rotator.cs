@@ -13,10 +13,12 @@ public class Rotator : MonoBehaviour
 
     public void Rotate(Vector2 targetPosition)
     {
-        Vector2 direction = (targetPosition - _rigidbody.position).normalized;
+        Vector2 currentPosition = _rigidbody.position;
+        Vector2 direction = (targetPosition - currentPosition).normalized;
 
-        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        float angularDifference = Mathf.DeltaAngle(_rigidbody.rotation, targetAngle);
+        float targetAngel = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float currentAngel = _rigidbody.rotation;
+        float angularDifference = Mathf.DeltaAngle(currentAngel, targetAngel);
 
         _rigidbody.angularVelocity = angularDifference * _rotationSpeed;
     }
