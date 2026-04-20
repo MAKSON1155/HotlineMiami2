@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Bullet : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
-    private bool _isHit = false;
 
     private void Awake()
     {
@@ -31,8 +31,12 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject != gameObject)
         {
-            _isHit = true;
-            Destroy(collision.gameObject);
+            if (collision.gameObject.TryGetComponent<Player>(out _))
+            {
+                Destroy(collision.gameObject);         
+                SceneManager.LoadScene(0);
+            }
+
             Destroy(gameObject);
         }
     }

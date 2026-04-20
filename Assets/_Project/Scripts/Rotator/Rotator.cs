@@ -23,6 +23,13 @@ public class Rotator : MonoBehaviour
         float currentAngel = _rigidbody.rotation;
         float angularDifference = Mathf.DeltaAngle(currentAngel, targetAngel);
 
+        if (Mathf.Abs(angularDifference) < 2.5f)
+        {
+            _rigidbody.angularVelocity = 0;
+            return;
+        }
+
         _rigidbody.angularVelocity = angularDifference * _rotationSpeed;
+
     }
 }

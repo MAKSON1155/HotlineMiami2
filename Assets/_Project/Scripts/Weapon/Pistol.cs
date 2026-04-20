@@ -1,54 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Pistol : Weapon
-{
-    private void Awake()
-    {
-        _rotator = GetComponent<Rotator>();
-        _clipCurrentSize = _clipMaxSize;
-        _waitGunRate = new WaitForSeconds(_gunRateDelay);
-        _waitReload = new WaitForSeconds(_reloadTime);
-    }
-
-    public override void Shot()
-    {
-        if (_clipCurrentSize <= 0)
-        {
-            //Reload();
-            return;
-        }
-
-        if (_clipCurrentSize > 0)
-            _shotCoroutine ??= StartCoroutine(DelayCoroutine());
-    }
-
-    public override void Reload()
-    {
-        if (_clipCurrentSize >= _clipMaxSize)
-            return;
-
-        _reloadCoroutine ??= StartCoroutine(ReloadCoroutine());
-    }
-
-    protected override IEnumerator DelayCoroutine()
-    {
-        Bullet bullet = Instantiate(_bulletPrefab, _position.transform.position, Quaternion.identity);
-        bullet.Move(_rotator.Direction, _bulletSpeed);
-        _clipCurrentSize--;
-        yield return _waitGunRate;
-
-        StopCoroutine(_shotCoroutine);
-        _shotCoroutine = null;
-    }
-
-    protected override IEnumerator ReloadCoroutine()
-    {
-        yield return _waitReload;
-
-        _clipCurrentSize = _clipMaxSize;
-        StopCoroutine(_reloadCoroutine);
-        _reloadCoroutine = null;
-    }
+public class Pistol : MonoBehaviour
+{ 
 }
 

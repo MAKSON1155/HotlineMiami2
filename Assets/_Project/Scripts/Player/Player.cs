@@ -11,10 +11,11 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        _weapon = GetComponent<Weapon>();
+        _weapon.Refresh(_weapon.Weapons[0]);
         _inputReader = GetComponent<InputReader>();
         _playerMover = GetComponent<PlayerMover>();
         _rotator = GetComponent<Rotator>();
-        _weapon = GetComponent<Weapon>();
     }
 
     private void FixedUpdate()
@@ -22,7 +23,6 @@ public class Player : MonoBehaviour
         _rotator.Rotate(_inputReader.MousePosition);
 
         _playerMover.Move(_inputReader.MoveDirection);
-
 
         if (_inputReader.GetIsShot)
             _weapon.Shot();
