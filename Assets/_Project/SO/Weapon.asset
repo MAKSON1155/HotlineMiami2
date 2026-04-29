@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63a3c9de3845db043b9cbf5a46589fb8, type: 3}
-  m_Name: Pistol
+  m_Name: Weapon
   m_EditorClassIdentifier: 
-  <ClipMaxSize>k__BackingField: 7
-  <_gunRateDelay>k__BackingField: 2
-  <_reloadTime>k__BackingField: 3
-  <_bulletSpeed>k__BackingField: 5
-  <_bulletPrefab>k__BackingField: {fileID: -5032554630330766013, guid: c6f9b15283614474e8d754d636ce693c, type: 3}
-  <_active>k__BackingField: 1
+  <ClipMaxSize>k__BackingField: 6
+  <GunRateDelay>k__BackingField: 1
+  <ReloadTime>k__BackingField: 5
+  <BulletSpeed>k__BackingField: 2
+  <BulletPrefab>k__BackingField: {fileID: -5032554630330766013, guid: c6f9b15283614474e8d754d636ce693c, type: 3}
+  <Type>k__BackingField: 1

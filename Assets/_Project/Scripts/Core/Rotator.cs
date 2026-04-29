@@ -3,8 +3,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Rotator : MonoBehaviour
 {
-    [SerializeField] private float _rotationSpeed;
+    [SerializeField] private float _rotationSpeed = 10f;
     private Rigidbody2D _rigidbody;
+
+    public Vector2 Direction { get; private set; }
 
     private void Awake()
     {
@@ -15,6 +17,11 @@ public class Rotator : MonoBehaviour
     {
         Vector2 currentPosition = _rigidbody.position;
         Vector2 direction = (targetPosition - currentPosition).normalized;
+
+        if (direction == Vector2.zero)
+            direction = Vector2.right;
+
+        Direction = direction;
 
         float targetAngel = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         float currentAngel = _rigidbody.rotation;

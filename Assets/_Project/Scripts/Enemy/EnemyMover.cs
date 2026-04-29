@@ -1,32 +1,29 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Rotator))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class EnemyMover : MonoBehaviour
-{  
-    [SerializeField] private float _moveSpeed = 4f;
-    [SerializeField] private float _stopDistance = 0.1f;
+{
+    [SerializeField] private float _speed = 4f;
+    [SerializeField] private float _stopDistance = 0.3f;
 
     private Rigidbody2D _rigidbody;
-    private Rotator _rotator;
-    
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _rotator = GetComponent<Rotator>();
     }
 
-    public void Move(Vector2 targetPosition)
+    public void MoveTo(Vector2 target)
     {
-        _rotator.Rotate(targetPosition);
+        Vector2 offset = target - _rigidbody.position;
 
-        Vector2 currentPosition = _rigidbody.position;
-        Vector2 offset = targetPosition - currentPosition;
+        if (offset.sqrMagnitude < _stopDistance * _stopDistance)
+        {
+            _rigidbody.velocity = Vector2.zero;
+            return;
+        }
 
-        if (offset.magnitude < _stopDistance)
-            Stop();
-
-        Vector2 direction = offset.normalized;
-        _rigidbody.velocity = direction * _moveSpeed;
+        _rigidbody.velocity = offset.normalized * _speed;
     }
 
     public void Stop()
