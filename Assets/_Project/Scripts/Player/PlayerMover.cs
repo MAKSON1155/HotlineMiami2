@@ -1,11 +1,8 @@
-using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMover : MonoBehaviour
 {
-    private const float SpeedThreshold = 0.5f;
-
     [SerializeField, Range(1.0f, 10.0f)] private float _moveSpeed = 4.0f;
     private Rigidbody2D _rigidbody;
 
@@ -23,7 +20,6 @@ public class PlayerMover : MonoBehaviour
             direction = Vector2.zero;
 
         Vector2 velocity = direction * _moveSpeed;
-
         _rigidbody.velocity = velocity;
     }       
 }

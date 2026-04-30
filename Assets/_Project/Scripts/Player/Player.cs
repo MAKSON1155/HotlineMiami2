@@ -1,34 +1,37 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMover), typeof(InputReader), typeof(Rotator))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField] private Weapon _weapon;
-
-    private PlayerMover _playerMover;
+    private PlayerMover _mover;
     private InputReader _inputReader;
     private Rotator _rotator;
 
     private void Awake()
     {
-        _weapon = GetComponent<Weapon>();
-        _weapon.Refresh(_weapon.Weapons[0]);
+        _mover = GetComponent<PlayerMover>();
         _inputReader = GetComponent<InputReader>();
-        _playerMover = GetComponent<PlayerMover>();
         _rotator = GetComponent<Rotator>();
     }
 
     private void FixedUpdate()
     {
+        if (_weapon != null)
+        {
+            if (_inputReader.GetIsShot)
+                _weapon.Shot();
+
+            if (_inputReader.GetIsReload)
+                _weapon.Reload();
+        }
+
         _rotator.Rotate(_inputReader.MousePosition);
+        _mover.Move(_inputReader.MoveDirection);
+    }
 
-        _playerMover.Move(_inputReader.MoveDirection);
-
-
-        if (_inputReader.GetIsShot)
-            _weapon.Shot();
-
-        if (_inputReader.GetIsReload)
-            _weapon.Reload();
+    public void TakeDamage()
+    {
+        Destroy(gameObject);
     }
 }

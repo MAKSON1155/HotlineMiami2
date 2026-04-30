@@ -1,58 +1,41 @@
-using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyMover))]
+[RequireComponent(typeof(EnemyMover), typeof(Rotator))]
 public class EnemyPatrol : MonoBehaviour
 {
-    [SerializeField] private PatrolPoint[] _patrolPoints;
+    [SerializeField] private PatrolPoint[] _points;
+    [SerializeField] private float _pointReachDistance = 0.2f;
 
     private EnemyMover _mover;
-    private Rigidbody2D _rigidbody;
-    private WaitForSeconds _waitForSeconds;
-    private Coroutine _currentCoroutine;
-
-    private readonly float _stopDistance = 0.2f;
-    private readonly float _sleep = 1f;
-    private int _currentPoint = 0;
+    private Rotator _rotator;
+    private int _index;
+    private bool _isPatrolling = true;
 
     private void Awake()
     {
         _mover = GetComponent<EnemyMover>();
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _currentCoroutine = null;
-        _waitForSeconds = new WaitForSeconds(_sleep);
+        _rotator = GetComponent<Rotator>();
     }
 
-    private void Start()
+    private void Update()
     {
-        _currentCoroutine = StartCoroutine(Patrol());
+        if (_isPatrolling == false)
+            return;
+
+        if (_points == null || _points.Length == 0)
+            return;
+
+        Transform targetPoint = _points[_index].transform;
+        _rotator.Rotate(targetPoint.position);
+        _mover.MoveTo(targetPoint.position);
+
+        if (Vector2.Distance(transform.position, targetPoint.position) < _pointReachDistance)
+            _index = (_index + 1) % _points.Length;
     }
 
-    public void StopPatrol()
+    public void Stop()
     {
-        if (_currentCoroutine != null)
-            StopCoroutine(_currentCoroutine);
-
-        _currentCoroutine = null;
+        _isPatrolling = false;
         _mover.Stop();
-    }
-
-    private IEnumerator Patrol()
-    {
-        while (true)
-        {
-            Vector2 targetPosition = _patrolPoints[_currentPoint].transform.position;
-            Vector2 offset = targetPosition - _rigidbody.position;
-
-            if (offset.magnitude < _stopDistance)
-            {
-                _currentPoint = ++_currentPoint % _patrolPoints.Length;
-                _mover.Stop();
-                yield return _waitForSeconds;
-            }
-
-            _mover.Move(targetPosition);
-            yield return null;
-        }
     }
 }

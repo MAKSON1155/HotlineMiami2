@@ -1,36 +1,24 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
 public class EnemiesDetector : MonoBehaviour
 {
     public event Action<Vector2> HasDetected;
 
-    private WaitForSeconds _sleep;
-    private Collider2D[] _colliders;
-    private readonly float _radius = 15f;
+    [SerializeField] private float _radius = 15f;
+    private readonly Collider2D[] _results = new Collider2D[10];
 
-    private void Awake()
+    private void FixedUpdate()
     {
-        _sleep = new WaitForSeconds(0.2f);
-    }
+        int count = Physics2D.OverlapCircleNonAlloc(transform.position, _radius, _results);
 
-    private void Start()
-    {
-        StartCoroutine(Overlap());
-    }
-
-    private IEnumerator Overlap()
-    {
-        while (true)
-        {       
-            yield return _sleep;
-        
-            _colliders = Physics2D.OverlapCircleAll(transform.position, _radius);
-            
-            foreach (Collider2D collider in _colliders)        
-                if (collider.gameObject.TryGetComponent(out Player target))              
-                    HasDetected?.Invoke(target.transform.position);
+        for (int i = 0; i < count; i++)
+        {
+            if (_results[i].TryGetComponent(out Player player))
+            {
+                HasDetected?.Invoke(player.transform.position);
+                break;
+            }
         }
     }
 }

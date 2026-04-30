@@ -1,86 +1,90 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rotator))]
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private int _clipMaxSize;
-    [SerializeField] private float _gunRateDelay;
-    [SerializeField] private float _reloadTime;
-    [SerializeField] private float _bulletSpeed;
-    [SerializeField] private Bullet _bulletPrefab;
-    [SerializeField] private GameObject _position;
-
-    [SerializeField] public List<Weapons> Weapons;
-    private Weapons _active;
-
-    private int _clipCurrentSize;
-    private Coroutine _shotCoroutine;
-    private Coroutine _reloadCoroutine;
-    private WaitForSeconds _waitGunRate;
-    private WaitForSeconds _waitReload;
+    [SerializeField] private WeaponData _data;
+    [SerializeField] private Transform _firePoint;
+    private int _currentAmmo;
+    private float _lastShotTime;
     private Rotator _rotator;
-
-    private void Awake()
-    {
-        _active = Weapons[0];        
-        _rotator = GetComponent<Rotator>();
-    }
 
     private void Start()
     {
-        _clipCurrentSize = _clipMaxSize;
-        _waitGunRate = new WaitForSeconds(_gunRateDelay);
-        _waitReload = new WaitForSeconds(_reloadTime);
+        if (_data == null)
+            return;
+
+        _currentAmmo = _data.ClipMaxSize;
+        _rotator = GetComponent<Rotator>();
     }
 
     public void Shot()
     {
-        if (_clipCurrentSize <= 0)
+        if (_data == null)
+            return;
+
+        if (Time.time < _lastShotTime + _data.GunRateDelay)
+            return;
+
+        if (_currentAmmo <= 0)
         {
             Reload();
             return;
         }
 
-        if (_clipCurrentSize > 0)
-            _shotCoroutine ??= StartCoroutine(DelayCoroutine());
+        Vector2 shootDirection = GetShootDirection();
+
+        if (shootDirection == Vector2.zero)
+            return;
+
+        ShootAtDirection(shootDirection);
+    }
+
+    public void ShootAtDirection(Vector2 direction)
+    {
+        if (_data == null)
+            return;
+
+        if (_currentAmmo <= 0)
+        {
+            Reload();
+            return;
+        }
+
+        if (_firePoint == null)
+            return;
+
+        var bullet = Instantiate(_data.BulletPrefab, _firePoint.position, Quaternion.identity);
+        bullet.Init(direction, _data.BulletSpeed);
+        _currentAmmo--;
+        _lastShotTime = Time.time;
+    }
+
+    private Vector2 GetShootDirection()
+    {
+        if (_rotator != null && _rotator.Direction != Vector2.zero)
+            return _rotator.Direction;
+
+        Camera mainCamera = Camera.main;
+
+        if (mainCamera != null)
+        {
+            Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 direction = (mouseWorldPos - _firePoint.position).normalized;
+            if (direction != Vector2.zero)
+                return direction;
+        }
+
+        return Vector2.right;
     }
 
     public void Reload()
     {
-        if (_clipCurrentSize >= _clipMaxSize)
+        if (_data == null)
+            return;
+        if (_currentAmmo == _data.ClipMaxSize)
             return;
 
-        _reloadCoroutine ??= StartCoroutine(ReloadCoroutine());
-    }
-
-    public void Refresh(Weapons weapon)
-    {
-        _clipMaxSize = weapon.ClipMaxSize;
-        _gunRateDelay = weapon._gunRateDelay;
-        _reloadTime = weapon._reloadTime;
-        _bulletSpeed = weapon._bulletSpeed;
-        _active = weapon;
-    }
-
-    private IEnumerator DelayCoroutine()
-    {
-        Bullet bullet = Instantiate(_bulletPrefab, _position.transform.position, Quaternion.identity);
-        bullet.Move(_rotator.Direction, _bulletSpeed);
-        _clipCurrentSize--;
-        yield return _waitGunRate;
-
-        StopCoroutine(_shotCoroutine);
-        _shotCoroutine = null;
-    }
-
-    private IEnumerator ReloadCoroutine()
-    {
-        yield return _waitReload;
-
-        _clipCurrentSize = _clipMaxSize;
-        StopCoroutine(_reloadCoroutine);
-        _reloadCoroutine = null;
+        _currentAmmo = _data.ClipMaxSize;
     }
 }

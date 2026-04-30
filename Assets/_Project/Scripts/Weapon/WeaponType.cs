@@ -1,4 +1,4 @@
-﻿public enum WeaponTypes
+﻿public enum WeaponType
 {
     None = 0,
     Pistol,
