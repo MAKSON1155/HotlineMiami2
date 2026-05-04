@@ -5,7 +5,7 @@ public class EnemiesDetector : MonoBehaviour
 {
     public event Action<Vector2> HasDetected;
 
-    [SerializeField] private float _radius = 15f;
+    [SerializeField] private float _radius = 5f;
     private readonly Collider2D[] _results = new Collider2D[10];
 
     private void FixedUpdate()

@@ -8,6 +8,8 @@ public class EnemyMover : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
 
+    public bool IsMoving { get; private set; } = false;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -23,11 +25,13 @@ public class EnemyMover : MonoBehaviour
             return;
         }
 
+        IsMoving = true;
         _rigidbody.velocity = offset.normalized * _speed;
     }
 
     public void Stop()
     {
+        IsMoving = false;
         _rigidbody.velocity = Vector2.zero;
     }
 }

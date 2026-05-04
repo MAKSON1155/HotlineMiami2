@@ -4,28 +4,17 @@
 public class EnemyAttack : MonoBehaviour
 {
     [SerializeField] private Weapon _weapon;
-    [SerializeField] private float _attackRange = 5f;
+    [SerializeField] private float _attackRange = 10f;
     [SerializeField] private float _shootDelay = 1f;
 
     private Rotator _rotator;
     private float _lastShootTime;
-    private Vector2 _targetPosition;
     private bool _isAttacking = false;
+    private Vector2 _targetPosition;
 
     private void Awake()
     {
         _rotator = GetComponent<Rotator>();
-    }
-
-    public void StartAttack(Vector2 targetPosition)
-    {
-        _targetPosition = targetPosition;
-        _isAttacking = true;
-    }
-
-    public void StopAttack()
-    {
-        _isAttacking = false;
     }
 
     private void Update()
@@ -43,6 +32,14 @@ public class EnemyAttack : MonoBehaviour
             _lastShootTime = Time.time;
         }
     }
+
+    public void StartAttack(Vector2 targetPosition)
+    {
+        _targetPosition = targetPosition;
+        _isAttacking = true;
+    }
+
+    public void StopAttack() => _isAttacking = false;
 
     private void Shoot()
     {

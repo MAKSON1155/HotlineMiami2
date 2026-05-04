@@ -7,11 +7,15 @@ public class Bullet : MonoBehaviour
     private float _speed;
     private Vector2 _direction;
 
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody2D>();
+    }
+
     public void Init(Vector2 direction, float speed)
     {
         _direction = direction.normalized;
         _speed = speed;
-        _rigidbody = GetComponent<Rigidbody2D>();
         _rigidbody.velocity = _direction * _speed;
 
         RotateBullet();

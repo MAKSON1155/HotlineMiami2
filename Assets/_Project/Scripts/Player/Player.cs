@@ -1,9 +1,12 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMover), typeof(InputReader), typeof(Rotator))]
+[RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField] private Weapon _weapon;
+    [SerializeField] private Animator _animator;
+
     private PlayerMover _mover;
     private InputReader _inputReader;
     private Rotator _rotator;
@@ -28,10 +31,12 @@ public class Player : MonoBehaviour, IDamageable
 
         _rotator.Rotate(_inputReader.MousePosition);
         _mover.Move(_inputReader.MoveDirection);
+
+        if (_mover.IsMoving)
+            _animator.SetBool("Run", true);
+        else
+            _animator.SetBool("Run", false);
     }
 
-    public void TakeDamage()
-    {
-        Destroy(gameObject);
-    }
+    public void TakeDamage() => Destroy(gameObject);
 }

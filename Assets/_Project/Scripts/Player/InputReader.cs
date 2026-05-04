@@ -9,11 +9,11 @@ public class InputReader : MonoBehaviour
 
     [SerializeField] private Camera _camera;
 
-    private bool _isShot;
-    private bool _isReload;
-
     public Vector2 MoveDirection { get; private set; }
     public Vector2 MousePosition { get; private set; }
+
+    private bool _isShot;
+    private bool _isReload;
 
     public bool GetIsShot => GetBoolAsTrigger(ref _isShot);
     public bool GetIsReload => GetBoolAsTrigger(ref _isReload);

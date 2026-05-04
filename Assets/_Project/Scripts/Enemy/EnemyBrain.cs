@@ -37,8 +37,5 @@ public class EnemyBrain : MonoBehaviour, IDamageable
         _attack.StartAttack(playerPosition);
     }
 
-    public void TakeDamage()
-    {
-        Destroy(gameObject);
-    }
+    public void TakeDamage() => Destroy(gameObject);
 }
