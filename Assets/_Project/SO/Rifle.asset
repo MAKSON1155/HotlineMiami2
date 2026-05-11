@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a3c9de3845db043b9cbf5a46589fb8, type: 3}
   m_Name: Rifle
   m_EditorClassIdentifier: 
-  <ClipMaxSize>k__BackingField: 15
+  <ClipMaxSize>k__BackingField: 10
   <GunRateDelay>k__BackingField: 0.5
   <ReloadTime>k__BackingField: 5
-  <BulletSpeed>k__BackingField: 7
+  <BulletSpeed>k__BackingField: 5
   <BulletPrefab>k__BackingField: {fileID: -5032554630330766013, guid: c6f9b15283614474e8d754d636ce693c, type: 3}
   <Type>k__BackingField: 2

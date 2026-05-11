@@ -1,7 +1,6 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMover), typeof(InputReader), typeof(Rotator))]
-[RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField] private Weapon _weapon;
