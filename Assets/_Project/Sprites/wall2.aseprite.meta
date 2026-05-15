@@ -98,7 +98,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639141041779260505
+  platformSettingsDirtyTick: 639144848227206571
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -124,7 +124,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: wall2
     originalName: 
-    pivot: {x: 0.5, y: -7.75}
+    pivot: {x: 0.5, y: 8}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
