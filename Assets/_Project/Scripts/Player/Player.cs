@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMover), typeof(InputReader), typeof(Rotator))]
@@ -9,6 +10,7 @@ public class Player : MonoBehaviour, IDamageable
     private PlayerMover _mover;
     private InputReader _inputReader;
     private Rotator _rotator;
+    public event Action HasDamaged;
 
     private void Awake()
     {
@@ -37,5 +39,9 @@ public class Player : MonoBehaviour, IDamageable
             _animator.SetBool("Run", false);
     }
 
-    public void TakeDamage() => Destroy(gameObject);
+    public void TakeDamage()
+    {
+        HasDamaged?.Invoke();
+        Destroy(gameObject);
+    }
 }
