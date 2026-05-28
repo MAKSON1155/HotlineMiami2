@@ -3,42 +3,42 @@ using UnityEngine;
 public class SwitchPlane : MonoBehaviour
 {
     [SerializeField] private Player _player;
-    [SerializeField] private EnemyCounter _enemyCounter;
+    [SerializeField] private EnemySpawner _spawner;
 
-    public UIPanel menu;
-    public UIPanel win;
+    [SerializeField] private UIPanel _menu;
+    [SerializeField] private UIPanel _win;
 
     private void OnEnable()
     {
         _player.HasDamaged += SwitchToScreenMenu;
-        _enemyCounter.HasWon += SwitchToScreenWin;
+        _spawner.HasDamaged += SwitchToScreenWin;
     }
 
     private void OnDisable()
     {
         _player.HasDamaged -= SwitchToScreenMenu;
-        _enemyCounter.HasWon -= SwitchToScreenWin;
+        _spawner.HasDamaged -= SwitchToScreenWin;
     }
 
     public void SwitchToScreenMenu()
     {
-        menu.gameObject.SetActive(true);
+        _menu.gameObject.SetActive(true);
         DeactiveScreenWin();
     }
 
     public void DeactiveScreenMenu()
     {
-        menu.gameObject.SetActive(false);
+        _menu.gameObject.SetActive(false);
     }
 
     public void SwitchToScreenWin()
     {
-        win.gameObject.SetActive(true);
+        _win.gameObject.SetActive(true);
         DeactiveScreenMenu();
     }
 
     public void DeactiveScreenWin()
     {
-        win.gameObject.SetActive(false);
+        _win.gameObject.SetActive(false);
     }
 }

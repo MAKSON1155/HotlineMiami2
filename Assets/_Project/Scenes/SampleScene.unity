@@ -653,7 +653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.61767185, g: 1, b: 0, a: 0.392}
+  m_Color: {r: 0.9389235, g: 1, b: 0, a: 0.392}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1647,30 +1647,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 820922464}
-  - component: {fileID: 820922463}
+  - component: {fileID: 820922465}
   m_Layer: 0
-  m_Name: EnemyCounter
+  m_Name: Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &820922463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820922462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 614ff4b991d77f4419f6a4fa4e19609e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Enemies:
-  - {fileID: 1431196163}
-  - {fileID: 1052698036}
-  - {fileID: 1759944128}
 --- !u!4 &820922464
 Transform:
   m_ObjectHideFlags: 0
@@ -1686,6 +1670,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &820922465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820922462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d605144331b262241b2f1a1999ce916f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemies:
+  - {fileID: 1431196163}
+  - {fileID: 1052698036}
+  - {fileID: 1759944128}
 --- !u!1 &1052698035
 GameObject:
   m_ObjectHideFlags: 0
@@ -1699,7 +1699,6 @@ GameObject:
   - component: {fileID: 1052698045}
   - component: {fileID: 1052698044}
   - component: {fileID: 1052698043}
-  - component: {fileID: 1052698042}
   - component: {fileID: 1052698041}
   - component: {fileID: 1052698036}
   - component: {fileID: 1052698040}
@@ -1804,19 +1803,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _radius: 5
---- !u!114 &1052698042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1052698035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81bdda83066b30843b373b3b6241a1bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 1052698037}
 --- !u!114 &1052698043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1994,9 +1980,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 1959718655}
-  _enemyCounter: {fileID: 820922463}
-  menu: {fileID: 1435269918}
-  win: {fileID: 361358040}
+  _spawner: {fileID: 820922465}
+  _menu: {fileID: 1435269918}
+  _win: {fileID: 361358040}
 --- !u!114 &1084361885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2072,8 +2058,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 361358039}
   - {fileID: 1435269917}
+  - {fileID: 361358039}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4338,7 +4324,6 @@ GameObject:
   - component: {fileID: 1431196170}
   - component: {fileID: 1431196172}
   - component: {fileID: 1431196166}
-  - component: {fileID: 1431196174}
   - component: {fileID: 1431196167}
   - component: {fileID: 1431196163}
   - component: {fileID: 1431196165}
@@ -4535,19 +4520,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1431196174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1431196162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81bdda83066b30843b373b3b6241a1bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 1431196173}
 --- !u!212 &1431196175
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4804,7 +4776,6 @@ GameObject:
   - component: {fileID: 1759944137}
   - component: {fileID: 1759944136}
   - component: {fileID: 1759944135}
-  - component: {fileID: 1759944134}
   - component: {fileID: 1759944133}
   - component: {fileID: 1759944128}
   - component: {fileID: 1759944132}
@@ -4909,19 +4880,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _radius: 5
---- !u!114 &1759944134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759944127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81bdda83066b30843b373b3b6241a1bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 1759944129}
 --- !u!114 &1759944135
 MonoBehaviour:
   m_ObjectHideFlags: 0

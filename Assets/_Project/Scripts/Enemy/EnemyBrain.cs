@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyPatrol), typeof(EnemyAttack), typeof(EnemiesDetector))]
@@ -7,6 +8,7 @@ public class EnemyBrain : MonoBehaviour, IDamageable
     private EnemyAttack _attack;
     private EnemiesDetector _detector;
     private bool _isChasing = false;
+    public event Action HasDamaged;
 
     private void Awake()
     {
@@ -37,5 +39,9 @@ public class EnemyBrain : MonoBehaviour, IDamageable
         _attack.StartAttack(playerPosition);
     }
 
-    public void TakeDamage() => Destroy(gameObject);
+    public void TakeDamage()
+    {
+        Destroy(gameObject);
+        HasDamaged?.Invoke();
+    }
 }
