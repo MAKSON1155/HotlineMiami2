@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rotator))]
@@ -8,9 +9,12 @@ public class Weapon : MonoBehaviour
     private int _currentAmmo;
     private float _lastShotTime;
     private Rotator _rotator;
+    private Coroutine _current;
+    private WaitForSeconds _reload;
 
     private void Start()
     {
+        _reload = new (_data.ReloadTime);
         if (_data == null)
             return;
 
@@ -28,7 +32,7 @@ public class Weapon : MonoBehaviour
 
         if (_currentAmmo <= 0)
         {
-            Reload();
+            //Reload();
             return;
         }
 
@@ -47,7 +51,7 @@ public class Weapon : MonoBehaviour
 
         if (_currentAmmo <= 0)
         {
-            Reload();
+            //Reload();
             return;
         }
 
@@ -82,9 +86,18 @@ public class Weapon : MonoBehaviour
     {
         if (_data == null)
             return;
+
         if (_currentAmmo == _data.ClipMaxSize)
             return;
 
+        _current ??= StartCoroutine(ReloadCoroutine());      
+    }
+
+    private IEnumerator ReloadCoroutine()
+    {
+        yield return _reload;
+        StopCoroutine(ReloadCoroutine());
+        _current = null;
         _currentAmmo = _data.ClipMaxSize;
     }
 }
