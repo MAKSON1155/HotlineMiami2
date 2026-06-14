@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyPatrol), typeof(EnemyAttack), typeof(EnemiesDetector))]
 public class EnemyBrain : MonoBehaviour, IDamageable
 {
+    [SerializeField] private GameObject _corpsePrefab;
     private EnemyPatrol _patrol;
     private EnemyAttack _attack;
     private EnemiesDetector _detector;
@@ -41,7 +42,15 @@ public class EnemyBrain : MonoBehaviour, IDamageable
 
     public void TakeDamage()
     {
-        Destroy(gameObject);
+        Die();
         HasDamaged?.Invoke();
+    }
+
+    private void Die()
+    {
+        if (_corpsePrefab != null)
+            Instantiate(_corpsePrefab, transform.position, transform.rotation);
+
+        Destroy(gameObject);
     }
 }

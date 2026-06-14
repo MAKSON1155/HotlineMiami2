@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyPatrol : MonoBehaviour
 {
     [SerializeField] private PatrolPoint[] _points;
-    [SerializeField] private float _pointReachDistance = 0.2f;
+    [SerializeField] private float _pointReachDistance = 1f;
 
     private EnemyMover _mover;
     private Rotator _rotator;

@@ -8,7 +8,7 @@ public class EnemiesDetector : MonoBehaviour
     [SerializeField] private float _radius = 5f;
     private readonly Collider2D[] _results = new Collider2D[10];
 
-    private void FixedUpdate()
+    private void Update()
     {
         int count = Physics2D.OverlapCircleNonAlloc(transform.position, _radius, _results);
 
@@ -18,7 +18,7 @@ public class EnemiesDetector : MonoBehaviour
             {
                 HasDetected?.Invoke(player.transform.position);
                 break;
-            }
+            }         
         }
     }
 }

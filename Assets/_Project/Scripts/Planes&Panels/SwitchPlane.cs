@@ -7,38 +7,63 @@ public class SwitchPlane : MonoBehaviour
 
     [SerializeField] private UIPanel _menu;
     [SerializeField] private UIPanel _win;
-
+    [SerializeField] private UIPanel _lose;
+    private UIPanel _currentScreen;
     private void OnEnable()
     {
-        _player.HasDamaged += SwitchToScreenMenu;
-        _spawner.HasDamaged += SwitchToScreenWin;
+        _player.HasDamaged += GetScreenLose;
+        _spawner.HasDamaged += GetScreenWin;
     }
 
     private void OnDisable()
     {
-        _player.HasDamaged -= SwitchToScreenMenu;
-        _spawner.HasDamaged -= SwitchToScreenWin;
+        _player.HasDamaged -= GetScreenLose;
+        _spawner.HasDamaged -= GetScreenWin;
     }
 
-    public void SwitchToScreenMenu()
+    private void Update()
     {
-        _menu.gameObject.SetActive(true);
-        DeactiveScreenWin();
+        if (_currentScreen == null)
+            return;
+
+        SwitchScreen();
     }
 
-    public void DeactiveScreenMenu()
+    public void GetScreen(UIPanel panel) => _currentScreen = panel;
+
+    public void SwitchScreen()
     {
-        _menu.gameObject.SetActive(false);
+        _currentScreen.gameObject.SetActive(true);
+        DeacriveOtherScreens();
     }
 
-    public void SwitchToScreenWin()
-    {
-        _win.gameObject.SetActive(true);
-        DeactiveScreenMenu();
-    }
+    private void GetScreenLose() => _currentScreen = _lose;
+    private void GetScreenWin() => _currentScreen = _win;
 
-    public void DeactiveScreenWin()
+    private void DeacriveOtherScreens()
     {
-        _win.gameObject.SetActive(false);
+        if (_currentScreen == _menu)
+        {
+            _win.Deactive();
+            _lose.Deactive();
+        }
+        else if (_currentScreen == _win)
+        {
+            _menu.Deactive();
+            _lose.Deactive();
+        }
+        else
+        {
+            _menu.Deactive();
+            _win.Deactive();
+        }
     }
+}
+
+public enum UIPanelType
+{
+    None = 0,
+    Menu,
+    Win,
+    Lose
 }

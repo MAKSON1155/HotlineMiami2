@@ -14,25 +14,22 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
-        _reload = new (_data.ReloadTime);
         if (_data == null)
             return;
 
+        _reload = new(_data.ReloadTime);
         _currentAmmo = _data.ClipMaxSize;
         _rotator = GetComponent<Rotator>();
     }
 
     public void Shot()
     {
-        if (_data == null)
-            return;
-
         if (Time.time < _lastShotTime + _data.GunRateDelay)
             return;
 
         if (_currentAmmo <= 0)
         {
-            //Reload();
+            Reload();
             return;
         }
 
@@ -51,7 +48,7 @@ public class Weapon : MonoBehaviour
 
         if (_currentAmmo <= 0)
         {
-            //Reload();
+            Reload();
             return;
         }
 
@@ -84,9 +81,6 @@ public class Weapon : MonoBehaviour
 
     public void Reload()
     {
-        if (_data == null)
-            return;
-
         if (_currentAmmo == _data.ClipMaxSize)
             return;
 
@@ -98,6 +92,7 @@ public class Weapon : MonoBehaviour
         yield return _reload;
         StopCoroutine(ReloadCoroutine());
         _current = null;
+
         _currentAmmo = _data.ClipMaxSize;
     }
 }

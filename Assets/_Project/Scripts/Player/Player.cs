@@ -6,6 +6,7 @@ public class Player : MonoBehaviour, IDamageable
 {
     [SerializeField] private Weapon _weapon;
     [SerializeField] private Animator _animator;
+    [SerializeField] private GameObject _corpsePrefab;
 
     private PlayerMover _mover;
     private InputReader _inputReader;
@@ -42,6 +43,14 @@ public class Player : MonoBehaviour, IDamageable
     public void TakeDamage()
     {
         HasDamaged?.Invoke();
+        Die();     
+    }
+
+    private void Die()
+    {
+        if (_corpsePrefab != null)
+            Instantiate(_corpsePrefab, transform.position, transform.rotation);
+
         Destroy(gameObject);
     }
 }

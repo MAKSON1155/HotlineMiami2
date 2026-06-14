@@ -3,17 +3,19 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIPanel : MonoBehaviour
-{ 
+{
     public Button ReloadButton;
-    public Button QuitButton;
+    public Button QuitButton;   
 
-    private void Update()
+    private void Awake()
     {
         ReloadButton.onClick.AddListener(ReloadScene);
-        QuitButton.onClick.AddListener(AppQuit);
+        QuitButton.onClick.AddListener(AppQuit);     
     }
 
-    private void ReloadScene() => SceneManager.LoadScene(0);
+    public void Deactive() => gameObject.SetActive(false);
 
-    private void AppQuit() => Application.Quit();
+    protected void ReloadScene() => SceneManager.LoadScene(0);
+
+    protected void AppQuit() => Application.Quit();
 }

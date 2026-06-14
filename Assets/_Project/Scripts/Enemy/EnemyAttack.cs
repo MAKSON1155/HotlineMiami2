@@ -22,6 +22,9 @@ public class EnemyAttack : MonoBehaviour
         if (_isAttacking == false || _weapon == null)
             return;
 
+        if (_targetPosition == Vector2.zero)
+            return;
+
         _rotator.Rotate(_targetPosition);
 
         float distance = Vector2.Distance(transform.position, _targetPosition);
@@ -35,6 +38,12 @@ public class EnemyAttack : MonoBehaviour
 
     public void StartAttack(Vector2 targetPosition)
     {
+        if (targetPosition == _targetPosition)
+        {
+            _targetPosition = Vector2.zero;
+            return;
+        }
+
         _targetPosition = targetPosition;
         _isAttacking = true;
     }
