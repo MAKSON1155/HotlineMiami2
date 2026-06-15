@@ -15,7 +15,7 @@ public class UIPanel : MonoBehaviour
 
     public void Deactive() => gameObject.SetActive(false);
 
-    protected void ReloadScene() => SceneManager.LoadScene(0);
+    protected void ReloadScene() => SceneManager.LoadScene(1);
 
     protected void AppQuit() => Application.Quit();
 }

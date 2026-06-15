@@ -59,11 +59,3 @@ public class SwitchPlane : MonoBehaviour
         }
     }
 }
-
-public enum UIPanelType
-{
-    None = 0,
-    Menu,
-    Win,
-    Lose
-}
