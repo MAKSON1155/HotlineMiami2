@@ -9,16 +9,17 @@ public class SwitchPlane : MonoBehaviour
     [SerializeField] private UIPanel _win;
     [SerializeField] private UIPanel _lose;
     private UIPanel _currentScreen;
+
     private void OnEnable()
     {
         _player.HasDamaged += GetScreenLose;
-        _spawner.HasDamaged += GetScreenWin;
+        _spawner.HasNoMore += GetScreenWin;
     }
 
     private void OnDisable()
     {
         _player.HasDamaged -= GetScreenLose;
-        _spawner.HasDamaged -= GetScreenWin;
+        _spawner.HasNoMore -= GetScreenWin;
     }
 
     private void Update()
@@ -33,14 +34,17 @@ public class SwitchPlane : MonoBehaviour
 
     public void SwitchScreen()
     {
+        if (_currentScreen == null)
+            return;
+
         _currentScreen.gameObject.SetActive(true);
-        DeacriveOtherScreens();
+        DeactiveOtherScreens();
     }
 
     private void GetScreenLose() => _currentScreen = _lose;
     private void GetScreenWin() => _currentScreen = _win;
 
-    private void DeacriveOtherScreens()
+    private void DeactiveOtherScreens()
     {
         if (_currentScreen == _menu)
         {

@@ -6,11 +6,12 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] private WeaponData _data;
     [SerializeField] private Transform _firePoint;
-    private int _currentAmmo;
-    private float _lastShotTime;
-    private Rotator _rotator;
+
     private Coroutine _current;
     private WaitForSeconds _reload;
+    private Camera _mainCamera;
+    private int _currentAmmo;
+    private float _lastShotTime;
 
     private void Start()
     {
@@ -19,10 +20,10 @@ public class Weapon : MonoBehaviour
 
         _reload = new(_data.ReloadTime);
         _currentAmmo = _data.ClipMaxSize;
-        _rotator = GetComponent<Rotator>();
+        _mainCamera = Camera.main;
     }
 
-    public void Shot()
+    public void ShotByMouseDirection()
     {
         if (Time.time < _lastShotTime + _data.GunRateDelay)
             return;
@@ -30,10 +31,11 @@ public class Weapon : MonoBehaviour
         if (_currentAmmo <= 0)
         {
             Reload();
+            Debug.Log("перезарядка(авто)");
             return;
         }
 
-        Vector2 shootDirection = GetShootDirection();
+        Vector2 shootDirection = GetMouseDirection();
 
         if (shootDirection == Vector2.zero)
             return;
@@ -61,17 +63,13 @@ public class Weapon : MonoBehaviour
         _lastShotTime = Time.time;
     }
 
-    private Vector2 GetShootDirection()
-    {
-        if (_rotator != null && _rotator.Direction != Vector2.zero)
-            return _rotator.Direction;
-
-        Camera mainCamera = Camera.main;
-
-        if (mainCamera != null)
+    private Vector2 GetMouseDirection()
+    {  
+        if (_mainCamera != null)
         {
-            Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mouseWorldPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = (mouseWorldPos - _firePoint.position).normalized;
+
             if (direction != Vector2.zero)
                 return direction;
         }
@@ -90,9 +88,9 @@ public class Weapon : MonoBehaviour
     private IEnumerator ReloadCoroutine()
     {
         yield return _reload;
+        _currentAmmo = _data.ClipMaxSize;
+
         StopCoroutine(ReloadCoroutine());
         _current = null;
-
-        _currentAmmo = _data.ClipMaxSize;
     }
 }

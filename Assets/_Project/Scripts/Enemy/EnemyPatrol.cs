@@ -8,6 +8,7 @@ public class EnemyPatrol : MonoBehaviour
 
     private EnemyMover _mover;
     private Rotator _rotator;
+    private Transform _targetPoint;
     private int _index;
     private bool _isPatrolling = true;
 
@@ -25,11 +26,11 @@ public class EnemyPatrol : MonoBehaviour
         if (_points == null || _points.Length == 0)
             return;
 
-        Transform targetPoint = _points[_index].transform;
-        _rotator.Rotate(targetPoint.position);
-        _mover.MoveTo(targetPoint.position);
+        _targetPoint = _points[_index].transform;
+        _rotator.Rotate(_targetPoint.position);
+        _mover.MoveTo(_targetPoint.position);
 
-        if (Vector2.Distance(transform.position, targetPoint.position) < _pointReachDistance)
+        if (Vector2.Distance(transform.position, _targetPoint.position) < _pointReachDistance)
             _index = (_index + 1) % _points.Length;
     }
 

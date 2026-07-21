@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyBrain : MonoBehaviour, IDamageable
 {
     [SerializeField] private GameObject _corpsePrefab;
+
     private EnemyPatrol _patrol;
     private EnemyAttack _attack;
     private EnemiesDetector _detector;
@@ -42,8 +43,8 @@ public class EnemyBrain : MonoBehaviour, IDamageable
 
     public void TakeDamage()
     {
-        Die();
         HasDamaged?.Invoke();
+        Die();
     }
 
     private void Die()

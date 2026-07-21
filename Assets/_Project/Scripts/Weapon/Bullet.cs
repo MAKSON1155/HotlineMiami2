@@ -4,8 +4,9 @@
 public class Bullet : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
-    private float _speed;
     private Vector2 _direction;
+    private float _speed;
+    private float _angle;
 
     private void Awake()
     {
@@ -25,17 +26,19 @@ public class Bullet : MonoBehaviour
 
     private void RotateBullet()
     {
-        float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
-        angle -= 90f;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        _angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
+        _angle -= 90f;
+        transform.rotation = Quaternion.Euler(0, 0, _angle);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (other.TryGetComponent(out IDamageable target))
+        if (collider.TryGetComponent(out IDamageable target))
         {
             target.TakeDamage();
             Destroy(gameObject);
         }
+        if (collider.TryGetComponent<Wall>(out _))
+            Destroy(gameObject);
     }
 }

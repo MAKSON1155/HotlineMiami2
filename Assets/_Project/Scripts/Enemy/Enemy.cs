@@ -4,18 +4,20 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
+
     private EnemyMover _enemyMover;
+    private static readonly int RunHash = Animator.StringToHash("Run");
 
     private void Awake()
     {
         _enemyMover = GetComponent<EnemyMover>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (_enemyMover.IsMoving)
-            _animator.SetBool("Run", true);
+            _animator.SetBool(RunHash, true);
         else
-            _animator.SetBool("Run", false);
+            _animator.SetBool(RunHash, false);
     }
 }

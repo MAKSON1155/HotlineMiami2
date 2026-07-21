@@ -4,13 +4,12 @@
 public class EnemyAttack : MonoBehaviour
 {
     [SerializeField] private Weapon _weapon;
-    [SerializeField] private float _attackRange = 10f;
     [SerializeField] private float _shootDelay = 1f;
 
     private Rotator _rotator;
+    private Vector2 _targetPosition;
     private float _lastShootTime;
     private bool _isAttacking = false;
-    private Vector2 _targetPosition;
 
     private void Awake()
     {
@@ -27,11 +26,10 @@ public class EnemyAttack : MonoBehaviour
 
         _rotator.Rotate(_targetPosition);
 
-        float distance = Vector2.Distance(transform.position, _targetPosition);
-
-        if (distance <= _attackRange && Time.time >= _lastShootTime + _shootDelay)
+        if (Time.time >= _lastShootTime + _shootDelay)
         {
             Shoot();
+            _targetPosition = Vector2.zero;
             _lastShootTime = Time.time;
         }
     }
@@ -54,11 +52,5 @@ public class EnemyAttack : MonoBehaviour
     {
         Vector2 shootDirection = (_targetPosition - (Vector2)transform.position).normalized;
         _weapon.ShootAtDirection(shootDirection);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
     }
 }

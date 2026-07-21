@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IDamageable
     private InputReader _inputReader;
     private Rotator _rotator;
     public event Action HasDamaged;
+    private static readonly int RunHash = Animator.StringToHash("Run");
 
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class Player : MonoBehaviour, IDamageable
         if (_weapon != null)
         {
             if (_inputReader.GetIsShot)
-                _weapon.Shot();
+                _weapon.ShotByMouseDirection();
 
             if (_inputReader.GetIsReload)
                 _weapon.Reload();
@@ -35,9 +36,9 @@ public class Player : MonoBehaviour, IDamageable
         _mover.Move(_inputReader.MoveDirection);
 
         if (_mover.IsMoving)
-            _animator.SetBool("Run", true);
+            _animator.SetBool(RunHash, true);
         else
-            _animator.SetBool("Run", false);
+            _animator.SetBool(RunHash, false);
     }
 
     public void TakeDamage()

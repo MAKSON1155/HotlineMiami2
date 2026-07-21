@@ -14,6 +14,7 @@ public class InputReader : MonoBehaviour
 
     private bool _isShot;
     private bool _isReload;
+    private Vector3 _mouseInputPos;
 
     public bool GetIsShot => GetBoolAsTrigger(ref _isShot);
     public bool GetIsReload => GetBoolAsTrigger(ref _isReload);
@@ -24,10 +25,10 @@ public class InputReader : MonoBehaviour
 
         if (_camera != null)
         {
-            Vector3 mousePos = Input.mousePosition;
+            _mouseInputPos = Input.mousePosition;
 
-            if (mousePos.x >= 0 && mousePos.x <= Screen.width && mousePos.y >= 0 && mousePos.y <= Screen.height)
-                MousePosition = _camera.ScreenToWorldPoint(mousePos);
+            if (_mouseInputPos.x >= 0 && _mouseInputPos.x <= Screen.width && _mouseInputPos.y >= 0 && _mouseInputPos.y <= Screen.height)
+                MousePosition = _camera.ScreenToWorldPoint(_mouseInputPos);
         }
 
         if (Input.GetKey(KeyShot))
