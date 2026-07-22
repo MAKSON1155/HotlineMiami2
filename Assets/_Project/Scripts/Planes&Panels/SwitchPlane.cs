@@ -8,6 +8,7 @@ public class SwitchPlane : MonoBehaviour
     [SerializeField] private UIPanel _menu;
     [SerializeField] private UIPanel _win;
     [SerializeField] private UIPanel _lose;
+    [SerializeField] private PlayerUI _UI;
     private UIPanel _currentScreen;
 
     private void OnEnable()
@@ -50,16 +51,19 @@ public class SwitchPlane : MonoBehaviour
         {
             _win.Deactive();
             _lose.Deactive();
+            _UI.Deactive();
         }
         else if (_currentScreen == _win)
         {
             _menu.Deactive();
             _lose.Deactive();
+            _UI.Deactive();
         }
         else
         {
             _menu.Deactive();
             _win.Deactive();
+            _UI.Deactive();
         }
     }
 }

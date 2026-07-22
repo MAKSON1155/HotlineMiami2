@@ -4,13 +4,18 @@ using UnityEngine;
 [RequireComponent(typeof(Rotator))]
 public class Weapon : MonoBehaviour
 {
+    public int CurrentAmmo => _currentAmmo;
+    public bool IsReload => _isReload;
+    public float ReloadTime => _data.ReloadTime;
+
     [SerializeField] private WeaponData _data;
     [SerializeField] private Transform _firePoint;
 
     private Coroutine _current;
-    private WaitForSeconds _reload;
+    private WaitForSeconds _reloadTime;
     private Camera _mainCamera;
     private int _currentAmmo;
+    private bool _isReload;
     private float _lastShotTime;
 
     private void Start()
@@ -18,20 +23,21 @@ public class Weapon : MonoBehaviour
         if (_data == null)
             return;
 
-        _reload = new(_data.ReloadTime);
+        _reloadTime = new(_data.ReloadTime);
         _currentAmmo = _data.ClipMaxSize;
         _mainCamera = Camera.main;
     }
 
     public void ShotByMouseDirection()
     {
+        if (_isReload) return;
+
         if (Time.time < _lastShotTime + _data.GunRateDelay)
             return;
 
         if (_currentAmmo <= 0)
         {
             Reload();
-            Debug.Log("перезарядка(авто)");
             return;
         }
 
@@ -45,6 +51,8 @@ public class Weapon : MonoBehaviour
 
     public void ShootAtDirection(Vector2 direction)
     {
+        if (_isReload) return;
+
         if (_data == null)
             return;
 
@@ -79,6 +87,8 @@ public class Weapon : MonoBehaviour
 
     public void Reload()
     {
+        if (_isReload) return;
+
         if (_currentAmmo == _data.ClipMaxSize)
             return;
 
@@ -87,10 +97,12 @@ public class Weapon : MonoBehaviour
 
     private IEnumerator ReloadCoroutine()
     {
-        yield return _reload;
+        _isReload = true;
+        yield return _reloadTime;
         _currentAmmo = _data.ClipMaxSize;
 
         StopCoroutine(ReloadCoroutine());
         _current = null;
+        _isReload = false;
     }
 }

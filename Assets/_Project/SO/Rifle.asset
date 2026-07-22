@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ClipMaxSize>k__BackingField: 10
   <GunRateDelay>k__BackingField: 0.5
-  <ReloadTime>k__BackingField: 3
-  <BulletSpeed>k__BackingField: 7
+  <ReloadTime>k__BackingField: 4
+  <BulletSpeed>k__BackingField: 8
   <BulletPrefab>k__BackingField: {fileID: -5032554630330766013, guid: c6f9b15283614474e8d754d636ce693c, type: 3}
   <Type>k__BackingField: 2
